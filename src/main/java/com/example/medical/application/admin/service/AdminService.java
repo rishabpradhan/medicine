@@ -6,7 +6,9 @@ import com.example.medical.domain.model.Users;
 import com.example.medical.domain.repository.MedicineRepository;
 import com.example.medical.domain.repository.UserRepository;
 
+import com.example.medical.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +20,22 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final UserRepository userRepository;
     private  final MedicineRepository medicineRepository;
+    private  final PasswordEncoder passwordEncoder;
+
+
 
     public Users login(AdminLoginRequestDTO request){
-        Users admin=userRepository.findByEmail(request.getEmail())
-                .orElseThrow(()->new RuntimeException("Admin not found"));
+        Users admin = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
 
-        if(!"ADMIN".equalsIgnoreCase(admin.getRole())){
+        if (!"ADMIN".equalsIgnoreCase(admin.getRole())) {
             throw new RuntimeException("Not an admin");
         }
-        if(!request.getPassword().equals(admin.getPassword())){
-            throw  new RuntimeException("password incorrect for admin");
 
+        if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
+            throw new RuntimeException("Password did not match");
         }
+
         return admin;
     }
 
