@@ -12,13 +12,12 @@ import java.time.Instant;
 @NoArgsConstructor
 @Builder
 public class BodyMetrics {
-private Long id;
+private Long userId;
 private String bloodPressure;
-private Instant date;
+
 private String notes;
 private Double sugarLevel;
 private Double temperature;
 private Double weight;
-private Long userId;
 
 }

@@ -17,15 +17,15 @@ public class MedicineResponseDTO {
     private Long userId;
     private Instant createdAt;
 
-    MedicineResponseDTO(Medicine medicine){
-        id=this.getId();
-        name=this.getName();
-        dosage=this.getDosage();
-        intakeTime=this.getIntakeTime();
-        notes=this.getNotes();
-        active=this.getActive();
-        userId=this.getUserId();
-        createdAt=this.getCreatedAt();
+    public MedicineResponseDTO(Medicine medicine){
+       this. id=this.getId();
+        this.name=this.getName();
+        this.dosage=this.getDosage();
+        this.intakeTime=this.getIntakeTime();
+        this.notes=this.getNotes();
+        this.active=this.getActive();
+        this.userId=this.getUserId();
+        this.createdAt=this.getCreatedAt();
 
 
 

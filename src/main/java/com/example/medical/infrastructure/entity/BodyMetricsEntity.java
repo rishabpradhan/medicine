@@ -22,7 +22,7 @@ public class BodyMetricsEntity {
     private String bloodPressure;
 
     @Column(name = "date", nullable = false)
-    private Instant date;
+    private Instant date=Instant.now();
 
     @Column(length = 255)
     private String notes;

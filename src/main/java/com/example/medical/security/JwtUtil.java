@@ -37,7 +37,7 @@ public String generateToken(String email, String role){
 }
 // exact email from given jwt token
 
-    public String ExtractEmail(String token){
+    public  String ExtractEmail(String token){
         Claims claims= Jwts.parser()
                 .setSigningKey(key)
                 .build()

@@ -14,15 +14,16 @@ import java.util.*;
 public class MedicineService {
     private final MedicineRepository medicineRepository;
 
-    public Medicine addMedicine(String name, String dosage, LocalTime intakeTime, String notes, boolean active,
-            Long userId) {
+    public Medicine addMedicine(Users user,String name, String dosage, LocalTime intakeTime, String notes, boolean active
+            ) {
         Medicine medicine = Medicine.builder()
+                .userId(user.getId())
                 .name(name)
                 .dosage(dosage)
                 .intakeTime(intakeTime)
                 .notes(notes)
                 .active(active)
-                .userId(userId)
+
                 .createdAt(Instant.now())
                 .build();
         return medicineRepository.save(medicine);
