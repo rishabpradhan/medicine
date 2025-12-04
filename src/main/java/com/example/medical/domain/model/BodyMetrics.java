@@ -19,5 +19,5 @@ private String notes;
 private Double sugarLevel;
 private Double temperature;
 private Double weight;
-
+//private Long medicineId;
 }

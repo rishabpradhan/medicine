@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AddMedicineUseCase {
-    private MedicineService medicineService;
+    private final MedicineService medicineService;
 
     public Medicine execute (Users users,MedicineRequestDTO dto){
         return medicineService.addMedicine(
@@ -19,7 +19,8 @@ public class AddMedicineUseCase {
                 dto.getDosage(),
                 dto.getIntakeTime(),
                 dto.getNotes(),
-                dto.isActive()
+                dto.getActive(),
+                users.getId()
 
 
         );

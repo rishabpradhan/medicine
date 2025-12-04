@@ -12,7 +12,7 @@ public class SideEffectResponseDTO {
    private String effect;
    private Instant date;
 
-   SideEffectResponseDTO(SideEffect sideEffect){
+   public SideEffectResponseDTO(SideEffect sideEffect){
        this.id= sideEffect.getId();
        this.userId = sideEffect.getUserId();
        this.medicineId = sideEffect.getMedicineId();

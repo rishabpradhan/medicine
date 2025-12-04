@@ -14,7 +14,7 @@ import java.util.*;
 public class MedicineService {
     private final MedicineRepository medicineRepository;
 
-    public Medicine addMedicine(Users user,String name, String dosage, LocalTime intakeTime, String notes, boolean active
+    public Medicine addMedicine(Users user,String name, String dosage, LocalTime intakeTime, String notes, boolean active,Long userId
             ) {
         Medicine medicine = Medicine.builder()
                 .userId(user.getId())
@@ -26,7 +26,7 @@ public class MedicineService {
 
                 .createdAt(Instant.now())
                 .build();
-        return medicineRepository.save(medicine);
+        return medicineRepository.save(medicine,userId);
 
     }
 

@@ -9,7 +9,7 @@ import java.time.Instant;
 public class SideEffectRequestDTO {
     @NotNull(message = "User ID is required")
     private Long userId;
-
+@NotNull(message = "medicineId is required")
     private Long medicineId;
 
     @NotBlank(message = "Effect description is required")

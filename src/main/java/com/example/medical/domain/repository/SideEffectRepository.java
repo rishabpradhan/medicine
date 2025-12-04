@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SideEffectRepository {
-    SideEffect save(SideEffect sideEffect);
+    SideEffect save(SideEffect sideEffect,Long userId);
     Optional<SideEffect> findById(Long id);
     List<SideEffect> findByUserId(Long userId);
     List<SideEffect> findByMedicineId(Long medicineId);
     void deleteById(Long id);
+
 }

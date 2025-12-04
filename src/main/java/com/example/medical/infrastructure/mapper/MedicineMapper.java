@@ -2,6 +2,7 @@ package com.example.medical.infrastructure.mapper;
 
 import com.example.medical.domain.model.Medicine;
 import com.example.medical.infrastructure.entity.MedicineEntity;
+import com.example.medical.infrastructure.entity.UserEntity;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

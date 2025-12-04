@@ -1,6 +1,7 @@
 package com.example.medical.domain.service;
 
 import com.example.medical.domain.model.SideEffect;
+import com.example.medical.domain.model.Users;
 import com.example.medical.domain.repository.SideEffectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,15 @@ import java.util.*;
 public class SideEffectService {
     private final SideEffectRepository sideEffectRepository;
 
-    public SideEffect addSideEffect(Long userId, Long medicineId, String effect, Instant date) {
+    public SideEffect addSideEffect(Users user,Long userId, Long medicineId, String effect, Instant date) {
         SideEffect sideEffect = SideEffect.builder()
-                .id(null)
-                .userId(userId)
+
+                .userId(user.getId())
                 .medicineId(medicineId)
                 .effect(effect)
                 .date(date)
                 .build();
-        return sideEffectRepository.save(sideEffect);
+        return sideEffectRepository.save(sideEffect,userId);
     }
 
     public Optional<SideEffect> getSideEffect(Long id) {

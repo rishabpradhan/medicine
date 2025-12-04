@@ -1,16 +1,25 @@
 package com.example.medical.application.sideeffect.usecase;
 
 import com.example.medical.application.sideeffect.dtos.SideEffectRequestDTO;
+import com.example.medical.domain.model.Medicine;
 import com.example.medical.domain.model.SideEffect;
+import com.example.medical.domain.model.Users;
 import com.example.medical.domain.service.SideEffectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 public class AddSideEffectUseCase {
-    private SideEffectService sideEffectService;
-    public SideEffect execute(SideEffectRequestDTO dto) {
-        return sideEffectService.addSideEffect(dto.getUserId(), dto.getMedicineId(), dto.getEffect(), dto.getDate());
+    private final SideEffectService sideEffectService;
+    public SideEffect execute(Users user, Medicine medicine,SideEffectRequestDTO dto) {
+        return SideEffect.builder()
+                .medicineId(medicine.getId())
+                .userId(user.getId())
+                .effect(dto.getEffect())
+                .date(Instant.now())
+                .build();
     }
 }

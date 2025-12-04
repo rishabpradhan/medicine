@@ -22,24 +22,26 @@ private final MedicineRepository medicineRepository;
 private final UserRepository userRepository;
 private final JwtUtil jwtUtil;
 private final AddMedicineUseCase addMedicineUseCase;
-    @PostMapping
 //    public ResponseEntity<Medicine> createMedicine(@RequestBody Medicine medicine) {
 //        Medicine saved = medicineRepository.save(medicine);
 //        return ResponseEntity.ok(saved);
 //    }
+@PostMapping
+public ResponseEntity<MedicineResponseDTO> addMedicine(
+        @RequestHeader("Authorization") String authHeader,
+        @Valid @RequestBody MedicineRequestDTO dto) {
 
-    public ResponseEntity<MedicineResponseDTO> addMedicine(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody MedicineRequestDTO dto){
-        String token=authHeader.replace("Bearer","").trim();
-        if(!jwtUtil.validateToken(token)){
-            return  ResponseEntity.status(401).build();
-        }
-        String email= jwtUtil.ExtractEmail(token);
-        Users user=userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
-        Medicine medicine=addMedicineUseCase.execute(user,dto);
+    String token = authHeader.replace("Bearer", "").trim();
+    if(!jwtUtil.validateToken(token)) return ResponseEntity.status(401).build();
 
-        return ResponseEntity.ok(new MedicineResponseDTO(medicine));
+    String email = jwtUtil.ExtractEmail(token);
+    Users user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-    }
+    Medicine medicine = addMedicineUseCase.execute(user, dto);
+    return ResponseEntity.ok(new MedicineResponseDTO(medicine));
+}
+
 
 
     @GetMapping("/{id}")
