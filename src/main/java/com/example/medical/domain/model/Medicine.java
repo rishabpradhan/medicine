@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 public class Medicine {
 private Long id;
-private boolean active;
+private Boolean active;
 private Instant createdAt;
 private String dosage;
 private LocalTime intakeTime;

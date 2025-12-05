@@ -16,6 +16,8 @@ public class AdminUserDTO {
     private String email;
     private String role;
     private List<MedicineDTO> medicines;
+    private List <AdminBodyMetricDTO> bodyMetrics;
+
 
     @Data
     @Builder
@@ -25,6 +27,7 @@ public class AdminUserDTO {
         private Long medicineId;
         private String name;
         private String dosage;
-        private String IntakeTime;
+        private String intakeTime;
     }
+
 }

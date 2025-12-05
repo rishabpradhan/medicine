@@ -11,7 +11,7 @@ import java.util.*;
 public class UserService {
     private final UserRepository userRepository;
 
-    public Users createUser(String name,String email,String password,String role,Integer age ,String gender){
+    public Users createUser(String email, String password, String role, String user, String dtoRole, Integer age , String gender){
         Users users=Users.builder()
                 .id(null)
                 .email(email)

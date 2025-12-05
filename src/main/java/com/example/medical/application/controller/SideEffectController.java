@@ -36,11 +36,13 @@ public class SideEffectController {
         }
 
         String email = jwtUtil.ExtractEmail(token);
+
         Users user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Medicine medicine=medicineRepository.findById(dto.getMedicineId()).orElseThrow(()->new RuntimeException("medicine not found"));
-        SideEffect sideEffect = addSideEffectUseCase.execute(user,medicine, dto);
 
+        Medicine medicine=medicineRepository.findById(dto.getMedicineId()).orElseThrow(()->new RuntimeException("medicine not found"));
+
+        SideEffect sideEffect = addSideEffectUseCase.execute(user,medicine, dto);
 
 
         return ResponseEntity.ok(new SideEffectResponseDTO(sideEffect));

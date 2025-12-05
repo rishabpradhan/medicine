@@ -16,7 +16,7 @@ public class BodyMetricsService {
     private final BodyMetricsRepository bodyMetricsRepository;
     private final UserRepository userRepository;
 
-    public BodyMetrics addMetrics(Users user,String userEmail, String bloodPressure, Double sugarLevel,
+    public BodyMetrics addMetrics(Users user, String bloodPressure, Double sugarLevel,
                                   Double temperature, Double weight, String notes) {
 
 

@@ -1,5 +1,6 @@
 package com.example.medical.domain.service;
 
+import com.example.medical.domain.model.Medicine;
 import com.example.medical.domain.model.SideEffect;
 import com.example.medical.domain.model.Users;
 import com.example.medical.domain.repository.SideEffectRepository;
@@ -13,15 +14,17 @@ import java.util.*;
 public class SideEffectService {
     private final SideEffectRepository sideEffectRepository;
 
-    public SideEffect addSideEffect(Users user,Long userId, Long medicineId, String effect, Instant date) {
+    public SideEffect addSideEffect(Users user, Long userId, Medicine medicine, String effect, Instant date) {
+       ;
+
         SideEffect sideEffect = SideEffect.builder()
 
                 .userId(user.getId())
-                .medicineId(medicineId)
+                .medicineId(medicine.getId())
                 .effect(effect)
                 .date(date)
                 .build();
-        return sideEffectRepository.save(sideEffect,userId);
+        return sideEffectRepository.save(sideEffect,userId,medicine.getId());
     }
 
     public Optional<SideEffect> getSideEffect(Long id) {

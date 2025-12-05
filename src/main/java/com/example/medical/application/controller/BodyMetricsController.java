@@ -21,10 +21,6 @@ private  final BodyMetricsRepository bodyMetricsRepository;
 private final UserRepository userRepository;
 private final JwtUtil jwtUtil;
 private final AddBodyMetricsUseCase addBodyMetricsUseCase;
-//@PostMapping
-//    public ResponseEntity<BodyMetrics> addMetrics(@RequestBody BodyMetrics metrics){
-//    return ResponseEntity.ok(bodyMetricsRepository.save(metrics));
-//}
 
     @PostMapping
    public ResponseEntity<BodyMetricsResponseDTO> addMetrics(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody BodyMetricsRequestDTO dto){

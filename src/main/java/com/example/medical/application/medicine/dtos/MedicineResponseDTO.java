@@ -17,19 +17,15 @@ public class MedicineResponseDTO {
     private Long userId;
     private Instant createdAt;
 
+    // Constructor
     public MedicineResponseDTO(Medicine medicine){
-       this. id=this.getId();
-        this.name=this.getName();
-        this.dosage=this.getDosage();
-        this.intakeTime=this.getIntakeTime();
-        this.notes=this.getNotes();
-        this.active=this.getActive();
-        this.userId=this.getUserId();
-        this.createdAt=this.getCreatedAt();
-
-
-
-
+        this.id = medicine.getId();
+        this.name = medicine.getName();
+        this.dosage = medicine.getDosage();
+        this.intakeTime = medicine.getIntakeTime();
+        this.notes = medicine.getNotes();
+        this.active = medicine.getActive();
+        this.userId = medicine.getUserId();
+        this.createdAt = medicine.getCreatedAt();
     }
-
 }

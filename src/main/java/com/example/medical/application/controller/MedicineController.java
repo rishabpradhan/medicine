@@ -22,10 +22,7 @@ private final MedicineRepository medicineRepository;
 private final UserRepository userRepository;
 private final JwtUtil jwtUtil;
 private final AddMedicineUseCase addMedicineUseCase;
-//    public ResponseEntity<Medicine> createMedicine(@RequestBody Medicine medicine) {
-//        Medicine saved = medicineRepository.save(medicine);
-//        return ResponseEntity.ok(saved);
-//    }
+
 @PostMapping
 public ResponseEntity<MedicineResponseDTO> addMedicine(
         @RequestHeader("Authorization") String authHeader,

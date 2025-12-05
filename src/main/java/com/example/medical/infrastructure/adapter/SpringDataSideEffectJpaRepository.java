@@ -1,12 +1,16 @@
 package com.example.medical.infrastructure.adapter;
 
+import com.example.medical.domain.model.Medicine;
 import com.example.medical.domain.model.SideEffect;
 
+import com.example.medical.domain.repository.MedicineRepository;
 import com.example.medical.domain.repository.SideEffectRepository;
+import com.example.medical.infrastructure.entity.MedicineEntity;
 import com.example.medical.infrastructure.entity.SideEffectEntity;
 import com.example.medical.infrastructure.entity.UserEntity;
 import com.example.medical.infrastructure.mapper.SideEffectMapper;
 
+import com.example.medical.infrastructure.repository.MedicineJpaRepository;
 import com.example.medical.infrastructure.repository.SideEffectJpaRepository;
 import com.example.medical.infrastructure.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +22,21 @@ import java.util.*;
 public class SpringDataSideEffectJpaRepository implements SideEffectRepository {
 private final UserJpaRepository userJpaRepository;
     private final SideEffectJpaRepository jpaRepository;
+    private final MedicineJpaRepository medicineJpaRepository;
 
-    public SideEffect save(SideEffect sideEffect,Long userId){
+    public SideEffect save(SideEffect sideEffect,Long userId,Long medicineId){
         // fetching userdata
         UserEntity user=userJpaRepository.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
+        MedicineEntity medicine=medicineJpaRepository.findById(medicineId).orElseThrow(()-> new RuntimeException("medicine not found"));
+
 
         SideEffectEntity entity=SideEffectMapper.toEntity(sideEffect);
         entity.setUser(user);
+        entity.setMedicine(medicine);
 
         entity=jpaRepository.save(entity);
         return SideEffectMapper.toDomain(entity);
-//        var entity=SideEffectMapper.toEntity(sideEffect);
-//        entity=jpaRepository.save(entity);
-//        return SideEffectMapper.toDomain(entity);
+
     }
 
     public Optional<SideEffect> findById(Long id) {

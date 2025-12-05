@@ -24,9 +24,7 @@ private String notes;
 
 @NotNull(message = "Active is required")
     private Boolean active;
-//    @NotNull(message = "User ID is required")
-//    private Long userId;
-//
+
 
 
 }

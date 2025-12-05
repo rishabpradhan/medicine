@@ -34,11 +34,7 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/dashboard")
-//    public ResponseEntity<List<AdminUserDTO>> dashboard() {
-//        List<AdminUserDTO> data = adminService.getDashboardData();
-//        return ResponseEntity.ok(data);
-//    }
+
 @GetMapping("/dashboard")
 public ResponseEntity<List<AdminUserDTO>> dashboard(@RequestHeader("Authorization") String authHeader) {
     String token = authHeader.replace("Bearer ", "");

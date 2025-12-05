@@ -15,6 +15,10 @@ import java.time.Instant;
 public class AddSideEffectUseCase {
     private final SideEffectService sideEffectService;
     public SideEffect execute(Users user, Medicine medicine,SideEffectRequestDTO dto) {
+//        Users user,Long userId, Long medicineId, String effect, Instant date
+
+        sideEffectService.addSideEffect(user, user.getId(), medicine, dto.getEffect(), Instant.now());
+
         return SideEffect.builder()
                 .medicineId(medicine.getId())
                 .userId(user.getId())

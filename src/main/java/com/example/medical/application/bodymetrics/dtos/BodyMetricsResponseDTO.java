@@ -13,6 +13,7 @@ public class BodyMetricsResponseDTO {
     private String notes;
 
 
+
     public BodyMetricsResponseDTO(BodyMetrics metrics) {
 
         this.bloodPressure = metrics.getBloodPressure();

@@ -45,7 +45,7 @@ public class MedicineMapper {
                 .dosage(domain.getDosage())
                 .intakeTime(domain.getIntakeTime())
                 .notes(domain.getNotes())
-                .active(domain.isActive())
+                .active(domain.getActive())
                 .createdAt(domain.getCreatedAt())
                 .build();
 

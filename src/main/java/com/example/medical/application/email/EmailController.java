@@ -29,10 +29,4 @@ public class EmailController {
     }
 
 
-//    @GetMapping("/test")
-//    public  String sendEmail(){
-//
-//        emailService.sendEmail("john@gmail.com","Reminder","take your medicine");
-//   return "Email sent sucessfully";
-//    }
 }

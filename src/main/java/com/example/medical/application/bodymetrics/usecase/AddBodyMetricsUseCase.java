@@ -16,7 +16,6 @@
         public BodyMetrics execute(Users user,BodyMetricsRequestDTO dto) {
             return bodyMetricsService.addMetrics(
                     user,
-                    user.getEmail(),
 
                     dto.getBloodPressure(),
                     dto.getSugarLevel(),

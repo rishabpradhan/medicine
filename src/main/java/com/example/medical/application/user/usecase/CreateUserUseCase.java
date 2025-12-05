@@ -15,6 +15,8 @@ public Users execute(UserRequestDTO dto){
             dto.getName(),
             dto.getEmail(),
             dto.getPassword(),
+            "USER",
+
             dto.getRole(),
             dto.getAge(),
             dto.getGender()

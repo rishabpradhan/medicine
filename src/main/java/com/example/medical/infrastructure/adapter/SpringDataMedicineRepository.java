@@ -6,9 +6,9 @@ import com.example.medical.domain.repository.MedicineRepository;
 import com.example.medical.infrastructure.entity.BodyMetricsEntity;
 import com.example.medical.infrastructure.entity.MedicineEntity;
 import com.example.medical.infrastructure.entity.UserEntity;
-import com.example.medical.infrastructure.mapper.BodyMetricsMapper;
+
 import com.example.medical.infrastructure.mapper.MedicineMapper;
-import com.example.medical.infrastructure.mapper.UserMapper;
+
 import com.example.medical.infrastructure.repository.MedicineJpaRepository;
 import com.example.medical.infrastructure.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +53,7 @@ private final UserJpaRepository userJpaRepository;
     }
 
     @Override
-//    public List<Medicine> findAll() {
-//        return jpaRepository.findAll()
-//                .stream()
-//                .map(entity -> MedicineMapper.toDomain(entity))
-//                .toList();
-//    }
+
     public List<Medicine> findAll() {
         return jpaRepository.findAll().stream()
                 .map(MedicineMapper::toDomain)
