@@ -41,7 +41,7 @@ public class MedicineEntity {
     @Column(length = 500)
     private String notes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_medicine_user"))
     private UserEntity user;

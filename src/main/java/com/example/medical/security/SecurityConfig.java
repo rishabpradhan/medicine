@@ -5,13 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-
 
 import java.util.List;
 
@@ -19,10 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // CORS (Frontend Angular communication)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("http://localhost:4200"));
@@ -31,15 +35,26 @@ public class SecurityConfig {
                     config.setAllowCredentials(true);
                     return config;
                 }))
-                .csrf(csrf -> csrf.disable())
+
+                // CSRF disabled because JWT is stateless — safe & recommended
+                .csrf(csrf->csrf.disable())
+
+                // Tell Spring Security this is a stateless API (Fixes SonarQube warning)
+
+                // Global exception handlers
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(customAuthenticationEntryPoint())
                         .accessDeniedHandler(customAccessDeniedHandler())
                 )
+
+                // Public vs Protected Endpoints
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/login", "/api/users/signup").permitAll()
-                        .anyRequest().authenticated() // require authentication for other endpoints
-                );
+                        .requestMatchers("/api/users/login", "/api/users/signup","/api/users/meF")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -50,19 +65,21 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Specific exception for unauthorized (401)
+    // Responds with 401 when unauthenticated
     @Bean
     public AuthenticationEntryPoint customAuthenticationEntryPoint() {
         return (request, response, authException) -> {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized: Invalid credentials");
+            response.sendError(HttpStatus.UNAUTHORIZED.value(),
+                    "Unauthorized: Invalid or missing token");
         };
     }
 
-    // Specific exception for access denied (403)
+    // Responds with 403 when authenticated but forbidden
     @Bean
     public AccessDeniedHandler customAccessDeniedHandler() {
-        return (request, response, accessDeniedException) -> {
-            response.sendError(HttpStatus.FORBIDDEN.value(), "Forbidden: Access denied");
+        return (request, response, ex) -> {
+            response.sendError(HttpStatus.FORBIDDEN.value(),
+                    "Forbidden: You do not have permission");
         };
     }
 }

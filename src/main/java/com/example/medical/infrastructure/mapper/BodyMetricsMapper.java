@@ -2,7 +2,7 @@ package com.example.medical.infrastructure.mapper;
 
 import com.example.medical.domain.model.BodyMetrics;
 import com.example.medical.infrastructure.entity.BodyMetricsEntity;
-import com.example.medical.infrastructure.entity.UserEntity;
+
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

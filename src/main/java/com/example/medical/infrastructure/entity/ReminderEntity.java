@@ -24,7 +24,7 @@ public class ReminderEntity {
     private Instant remindAt;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medicine_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_reminder_medicine"))
     private MedicineEntity medicine;

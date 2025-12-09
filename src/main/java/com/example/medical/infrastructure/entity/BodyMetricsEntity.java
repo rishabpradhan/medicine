@@ -37,7 +37,7 @@ public class BodyMetricsEntity {
     private Double weight;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_bodymetrics_user"))
     private UserEntity user;

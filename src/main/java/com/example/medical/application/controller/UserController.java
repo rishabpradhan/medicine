@@ -6,7 +6,9 @@ import com.example.medical.application.user.dtos.UserResponseDTO;
 import com.example.medical.domain.model.Users;
 import com.example.medical.domain.repository.UserRepository;
 import com.example.medical.security.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -87,8 +90,18 @@ public class UserController {
 
     // Get current user
     @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> getCurrentUser(@RequestHeader(AUTH_HEADER) String authHeader){
+    public ResponseEntity<UserResponseDTO> getCurrentUser(@Valid @RequestHeader(AUTH_HEADER) String authHeader){
+        System.out.println("Endpoint /me was called!"); // <-- new
+        log.info("Endpoint /me was called!");
+
         String token = authHeader.replace("Bearer","").trim();
+        if(jwtUtil.validateToken(token)){
+            System.out.println("token is valid ");
+        }
+        System.out.println("########################");
+        log.info(token);
+        System.out.println(token);
+
         String email = jwtUtil.ExtractEmail(token);
 
         Users user = userRepository.findByEmail(email)

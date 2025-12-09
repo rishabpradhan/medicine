@@ -14,12 +14,19 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-   @Value("${secret_key}")
+
     private String secretKey;
 
-@Value("${expiration_time}")
     private long expiration_time;
  private Key key;
+    public JwtUtil(
+            @Value("${SECRET_KEY}") String secretKey,
+            @Value("${EXPIRATION_TIME}") long expiration_time
+    ) {
+        this.secretKey = secretKey;
+        this.expiration_time = expiration_time;
+    }
+
 @PostConstruct
     public void init() {
         // Correct way to generate a secure Key object from the secret string

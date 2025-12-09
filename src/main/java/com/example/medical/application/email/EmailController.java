@@ -3,7 +3,7 @@ package com.example.medical.application.email;
 import com.example.medical.domain.repository.UserRepository;
 import com.example.medical.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
