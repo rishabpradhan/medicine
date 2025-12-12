@@ -26,6 +26,7 @@ public class AdminController {
         Users admin = adminService.login(request);
 
         String token = jwtUtil.generateToken(admin.getEmail(), admin.getRole());
+        System.out.println("token is"+token);
 
         // Wrap token in JSON object
         Map<String, String> response = new HashMap<>();
@@ -37,7 +38,8 @@ public class AdminController {
 
 @GetMapping("/dashboard")
 public ResponseEntity<List<AdminUserDTO>> dashboard(@RequestHeader("Authorization") String authHeader) {
-    String token = authHeader.replace("Bearer ", "");
+    String token = authHeader.replace("Bearer ", "").trim();
+    System.out.println("token is"+token);
     if (!jwtUtil.validateToken(token)) {
         return ResponseEntity.status(401).build();
     }

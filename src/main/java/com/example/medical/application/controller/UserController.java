@@ -91,16 +91,14 @@ public class UserController {
     // Get current user
     @GetMapping("/me")
     public ResponseEntity<UserResponseDTO> getCurrentUser(@Valid @RequestHeader(AUTH_HEADER) String authHeader){
-        System.out.println("Endpoint /me was called!"); // <-- new
-        log.info("Endpoint /me was called!");
+
 
         String token = authHeader.replace("Bearer","").trim();
         if(jwtUtil.validateToken(token)){
             System.out.println("token is valid ");
         }
-        System.out.println("########################");
-        log.info(token);
-        System.out.println(token);
+
+
 
         String email = jwtUtil.ExtractEmail(token);
 
