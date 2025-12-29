@@ -9,7 +9,8 @@ private Long id;
 private String name;
 private String email;
     private String role;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 
     public UserResponseDTO(Users users){
         this.id=users.getId();

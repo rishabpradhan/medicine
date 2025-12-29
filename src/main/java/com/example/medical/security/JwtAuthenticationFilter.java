@@ -28,24 +28,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7).trim();
-            if(jwtUtil.validateToken(token)){
-                String email = jwtUtil.ExtractEmail(token);
 
-                // Only store email in SecurityContext, not full UserEntity
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(email, null, List.of());
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-            }
-            else{
-                System.out.println("token is not valid ");
-
-            }
+            // Single call: validate token (includes blacklist check)
+            if (!jwtUtil.validateToken(token)) {
+                // Token invalid or blacklisted → reject
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Unauthorized: Token is invalid or blacklisted");
+                return; // Stop the request here
             }
 
+            // Token is valid → set authentication
+            String email = jwtUtil.ExtractEmail(token);
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(email, null, List.of());
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
 
+        // Continue filter chain if token is valid or endpoint is public
         filterChain.doFilter(request, response);
     }
 }

@@ -15,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -35,6 +37,7 @@ public class UserController {
     private static final String USER_EMAIL_NOT_FOUND = "User with email %s not found";
     private static final String USER_ID_NOT_FOUND = "User with id %d not found";
     private static final String PASSWORD_MISMATCH = "Password did not match";
+    private static  final String USER_NOT_FOUND="User not found";
 
     // Nested custom exceptions
     public static class UserNotFoundException extends RuntimeException {
@@ -75,9 +78,54 @@ public class UserController {
         }
 
         UserResponseDTO response = new UserResponseDTO(user);
-        String token = jwtUtil.generateToken(user.getEmail(), user.getPassword());
-        response.setToken(token);
+        String accesstoken = jwtUtil.generateAccessToken(user.getEmail(), user.getRole());
+        String refreshtoken=jwtUtil.generateRefreshToken(user.getEmail());
+
+        Map<String, String> tokens=new HashMap<>();
+        tokens.put("accesstoken",accesstoken);
+        tokens.put("refreshtoken",refreshtoken);
+       response.setAccessToken(accesstoken);
+       response.setRefreshToken(refreshtoken);
+       // System.out.println();
         return ResponseEntity.ok(response);
+    }
+
+    // new endpoint for refresh token
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String,String>>refreshAccessToken(@RequestBody Map<String,String> request){
+        String refreshToken=request.get("refreshToken");
+        if(!jwtUtil.validateToken(refreshToken)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        }
+        String email= jwtUtil.ExtractEmail(refreshToken);
+
+        Users users=userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException(String.format(USER_NOT_FOUND)));
+        String newAccessToken=jwtUtil.generateAccessToken(users.getEmail(), users.getRole());
+        Map<String,String> response=new HashMap<>();
+        response.put("accessToken",newAccessToken);
+        response.put("refreshToken",refreshToken);
+
+        return  ResponseEntity.ok(response);
+
+    }
+
+    // for logout
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(AUTH_HEADER) String authHeader,@RequestBody Map<String,String> body){
+        String accessToken=authHeader.replace("Bearer","").trim();
+        String refreshToken=body.get("refreshToken");
+
+        jwtUtil.blackListToken(accessToken);
+        jwtUtil.blackListToken(refreshToken);
+        boolean isBlackListed= jwtUtil.isTokenBlackListed(accessToken);
+        System.out.println("Access token "+isBlackListed);
+
+
+       boolean isRefreshTokenBlackListed= jwtUtil.isTokenBlackListed(refreshToken);
+        System.out.println("Refresh token "+isRefreshTokenBlackListed);
+
+        return ResponseEntity.ok().build();
     }
 
     // Get user by ID
@@ -97,6 +145,9 @@ public class UserController {
         if(jwtUtil.validateToken(token)){
             System.out.println("token is valid ");
         }
+        if(!jwtUtil.validateToken(token)){
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
 
 
@@ -105,7 +156,10 @@ public class UserController {
         Users user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_EMAIL_NOT_FOUND, email)));
 
-        return ResponseEntity.ok(new UserResponseDTO(user));
+        UserResponseDTO responseDTO=new UserResponseDTO(user);
+        //responseDTO.setAccessToken(token);
+      //  responseDTO.setRefreshToken(token);
+        return ResponseEntity.ok(responseDTO);
     }
 
     // Get all users

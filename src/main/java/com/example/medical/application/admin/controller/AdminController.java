@@ -25,7 +25,7 @@ public class AdminController {
     public ResponseEntity<Map<String, String>> login(@RequestBody AdminLoginRequestDTO request) {
         Users admin = adminService.login(request);
 
-        String token = jwtUtil.generateToken(admin.getEmail(), admin.getRole());
+        String token = jwtUtil.generateAccessToken(admin.getEmail(), admin.getRole());
         System.out.println("token is"+token);
 
         // Wrap token in JSON object
